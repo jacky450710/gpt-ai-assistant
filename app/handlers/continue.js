@@ -1,5 +1,5 @@
 import { generateCompletion } from '../../utils/index.js';
-import { ALL_COMMANDS, COMMAND_BOT_CONTINUE } from '../commands/index.js';
+import { COMMAND_BOT_CONTINUE } from '../commands/index.js';
 import Context from '../context.js';
 import { updateHistory } from '../history/index.js';
 import { getPrompt, setPrompt } from '../prompt/index.js';
@@ -26,9 +26,8 @@ const exec = (context) => check(context) && (
       if (lastMessage.isEnquiring && !isFinishReasonStop) prompt.write('', lastMessage.content);
       setPrompt(context.userId, prompt);
       if (!lastMessage.isEnquiring) updateHistory(context.id, (history) => history.patch(text));
-      const defaultActions = ALL_COMMANDS.filter(({ type }) => type === lastMessage.content);
-      const actions = isFinishReasonStop ? defaultActions : [COMMAND_BOT_CONTINUE];
-      context.pushText(text, actions);
+      // Continue remains a text command, but never appears as a quick-reply button.
+      context.pushText(text);
     } catch (err) {
       context.pushError(err);
     }
