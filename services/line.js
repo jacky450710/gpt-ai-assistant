@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '../config/index.js';
+import { authorizationHeader } from './utils/authorization.js';
 import { handleFulfilled, handleRejected, handleRequest } from './utils/index.js';
 
 export const EVENT_TYPE_MESSAGE = 'message';
@@ -30,7 +31,7 @@ const client = axios.create({
 });
 
 client.interceptors.request.use((c) => {
-  c.headers.Authorization = `Bearer ${config.LINE_CHANNEL_ACCESS_TOKEN}`;
+  c.headers.Authorization = authorizationHeader(config.LINE_CHANNEL_ACCESS_TOKEN, 'LINE_CHANNEL_ACCESS_TOKEN');
   return handleRequest(c);
 });
 
@@ -66,7 +67,7 @@ const dataClient = axios.create({
 });
 
 dataClient.interceptors.request.use((c) => {
-  c.headers.Authorization = `Bearer ${config.LINE_CHANNEL_ACCESS_TOKEN}`;
+  c.headers.Authorization = authorizationHeader(config.LINE_CHANNEL_ACCESS_TOKEN, 'LINE_CHANNEL_ACCESS_TOKEN');
   return handleRequest(c);
 });
 
