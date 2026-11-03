@@ -1,6 +1,7 @@
 import axios from 'axios';
 import FormData from 'form-data';
 import config from '../config/index.js';
+import { authorizationHeader } from './utils/authorization.js';
 import { handleFulfilled, handleRejected, handleRequest } from './utils/index.js';
 
 export const ROLE_SYSTEM = 'system';
@@ -28,7 +29,7 @@ const client = axios.create({
 });
 
 client.interceptors.request.use((c) => {
-  c.headers.Authorization = `Bearer ${config.OPENAI_API_KEY}`;
+  c.headers.Authorization = authorizationHeader(config.OPENAI_API_KEY, 'OPENAI_API_KEY');
   return handleRequest(c);
 });
 
