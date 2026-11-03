@@ -1,4 +1,5 @@
 import config from '../../config/index.js';
+import { getConfiguredModelReply } from '../../utils/model-identity.js';
 import { t } from '../../locales/index.js';
 import { ROLE_AI, ROLE_HUMAN } from '../../services/openai.js';
 import { generateCompletion } from '../../utils/index.js';
@@ -25,6 +26,14 @@ const exec = (context) => check(context) && (
   async () => {
     const prompt = getPrompt(context.userId);
     try {
+      if (context.event.isText) {
+        const identityReply = getConfiguredModelReply(context.trimmedText);
+        if (identityReply) {
+          updateHistory(context.id, (history) => history.write(config.BOT_NAME, identityReply));
+          context.pushText(identityReply);
+          return context;
+        }
+      }
       if (context.event.isText) {
         prompt.write(ROLE_HUMAN, `${t('__COMPLETION_DEFAULT_AI_TONE')(config.BOT_TONE)}${context.trimmedText}`).write(ROLE_AI);
       }
