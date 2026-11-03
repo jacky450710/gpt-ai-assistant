@@ -2,6 +2,7 @@ import axios from 'axios';
 import FormData from 'form-data';
 import config from '../config/index.js';
 import { authorizationHeader } from './utils/authorization.js';
+import { buildChatCompletionBody } from './utils/chat-completion-payload.js';
 import { handleFulfilled, handleRejected, handleRequest } from './utils/index.js';
 
 export const ROLE_SYSTEM = 'system';
@@ -54,14 +55,14 @@ const createChatCompletion = ({
   frequencyPenalty = config.OPENAI_COMPLETION_FREQUENCY_PENALTY,
   presencePenalty = config.OPENAI_COMPLETION_PRESENCE_PENALTY,
 }) => {
-  const body = {
+  const body = buildChatCompletionBody({
     model: hasImage({ messages }) ? config.OPENAI_VISION_MODEL : model,
     messages,
     temperature,
-    max_tokens: maxTokens,
-    frequency_penalty: frequencyPenalty,
-    presence_penalty: presencePenalty,
-  };
+    maxTokens,
+    frequencyPenalty,
+    presencePenalty,
+  });
   return client.post('/v1/chat/completions', body);
 };
 
