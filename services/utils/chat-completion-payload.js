@@ -7,13 +7,14 @@ export const buildChatCompletionBody = ({
   maxTokens,
   frequencyPenalty,
   presencePenalty,
+  reasoningEffort = 'low',
 }) => {
   if (model === 'gpt-6-luna') {
     return {
       model,
       messages,
       max_completion_tokens: maxTokens,
-      reasoning_effort: 'none',
+      reasoning_effort: reasoningEffort,
     };
   }
   return {
