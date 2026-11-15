@@ -13,9 +13,10 @@ class Prompt {
 
   constructor() {
     const baseSystemPrompt = config.APP_INIT_PROMPT || t('__COMPLETION_DEFAULT_SYSTEM_PROMPT');
+    const qualityGuidance = 'Reply in natural Traditional Chinese. Answer the user\'s actual question directly, with relevant reasons, practical details and examples. For comparisons or decisions, explain pros, cons, assumptions and give a recommendation. For how-to questions, provide actionable steps. For complex questions, organize an adequately detailed answer; for simple questions, be concise. Never invent facts, sources or current information. Admit uncertainty and distinguish confirmed facts from estimates. Aim to finish a complete thought without cutting off mid-sentence.';
     const modelIdentity = `This LINE chatbot's configured text AI model is ${config.OPENAI_COMPLETION_MODEL}. When asked which model or version powers this bot, answer with this exact configured model name. Do not claim to verify the model beyond this application configuration. The separate image-understanding model is ${config.OPENAI_VISION_MODEL}.`;
     this
-      .write(ROLE_SYSTEM, `${baseSystemPrompt}\n${modelIdentity}`)
+      .write(ROLE_SYSTEM, `${baseSystemPrompt}\n${modelIdentity}\n${qualityGuidance}`)
       .write(ROLE_HUMAN, `${t('__COMPLETION_DEFAULT_HUMAN_PROMPT')(config.HUMAN_NAME)}${config.HUMAN_INIT_PROMPT}`)
       .write(ROLE_AI, `${t('__COMPLETION_DEFAULT_AI_PROMPT')(config.BOT_NAME)}${config.BOT_INIT_PROMPT}`);
   }
