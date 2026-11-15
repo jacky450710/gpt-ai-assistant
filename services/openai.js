@@ -62,6 +62,7 @@ const createChatCompletion = ({
     maxTokens,
     frequencyPenalty,
     presencePenalty,
+    reasoningEffort: config.OPENAI_REASONING_EFFORT,
   });
   return client.post('/v1/chat/completions', body);
 };
